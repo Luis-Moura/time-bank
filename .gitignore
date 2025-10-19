@@ -1,0 +1,62 @@
+# Composer
+/vendor/
+/composer.phar
+
+# Environment
+.env
+
+# PHP / runtime
+*.log
+phpunit.xml.cache
+.phpunit.result.cache
+.php_cs.cache
+*.cache
+
+# Runtime folders
+/storage/
+/logs/
+/tmp/
+/cache/
+/sessions/
+/uploads/
+/public/uploads/
+
+# Build / test artifacts
+/coverage/
+/build/
+/dist/
+/public/build/
+/public/dist/
+
+# Node
+/node_modules/
+/yarn-error.log
+package-lock.json
+.pnpm-debug.log
+
+# IDEs and editors
+/.idea/
+/.vscode/
+/*.iml
+*.sublime-workspace
+*.sublime-project
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Keys and certificates
+*.pem
+*.key
+*.p12
+
+# Local docker overrides, secrets, etc.
+docker-compose.override.yml
+.env.docker
+
+# Database files (local)
+*.sqlite
+*.db
+
+# Misc
+*.swp
