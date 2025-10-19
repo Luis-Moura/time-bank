@@ -22,7 +22,7 @@ class HttpErrorHandler extends ErrorHandler
     public const RESOURCE_NOT_FOUND = 'RESOURCE_NOT_FOUND';
     public const SERVER_ERROR = 'SERVER_ERROR';
     public const UNAUTHENTICATED = 'UNAUTHENTICATED';
-    
+
     protected function respond(): ResponseInterface
     {
         $exception = $this->exception;
@@ -64,12 +64,12 @@ class HttpErrorHandler extends ErrorHandler
                 'description' => $description,
             ],
         ];
-        
+
         $payload = json_encode($error, JSON_PRETTY_PRINT);
-        
-        $response = $this->responseFactory->createResponse($statusCode);        
+
+        $response = $this->responseFactory->createResponse($statusCode);
         $response->getBody()->write($payload);
-        
+
         return $response;
     }
 }

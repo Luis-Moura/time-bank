@@ -11,7 +11,7 @@ $app = AppFactory::create();
 $app->setBasePath('/api/v1');
 
 //rotas
-require __DIR__ .'/../src/Routes/routes.php';
+require __DIR__ . '/../src/Routes/routes.php';
 
 //dotenv
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
