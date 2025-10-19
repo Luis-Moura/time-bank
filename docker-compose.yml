@@ -1,0 +1,22 @@
+services:
+  time-bank-postgresql:
+    image: postgres:15
+    container_name: time-bank-postgresql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: time_bank
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - time-bank-network
+
+volumes:
+  pgdata:
+    driver: local
+    
+networks:
+  time-bank-network:
+    driver: bridge
