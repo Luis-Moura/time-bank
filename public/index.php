@@ -10,7 +10,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 //database
-require __DIR__ . '/../src/Config/database.php';
+require __DIR__ . '/../src/Config/database/database.php';
 
 $app = AppFactory::create();
 
