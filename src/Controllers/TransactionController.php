@@ -50,4 +50,30 @@ class TransactionController
     $response->getBody()->write(json_encode($transactions));
     return $response->withHeader('Content-Type', 'application/json');
   }
+
+  public function accept(Request $request, Response $response, array $args)
+  {
+    $transactionId = $args['id'];
+    $userId = $request->getAttribute('user_id');
+
+    $transaction = Transaction::find($transactionId);
+
+    if (!$transaction || $transaction->to_user_id != $userId) {
+      $response->getBody()->write(json_encode(['error' => 'Transaction not found']));
+
+      return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+    }
+
+    if ($transaction->status !== 'pending') {
+      $response->getBody()->write(json_encode(['error' => 'Transaction already processed']));
+
+      return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+    }
+
+    $transaction->status = 'accepted';
+    $transaction->save();
+
+    $response->getBody()->write(json_encode($transaction));
+    return $response->withHeader('Content-Type', 'application/json');
+  }
 }
