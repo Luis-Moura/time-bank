@@ -17,6 +17,9 @@ $app = AppFactory::create();
 //base path
 $app->setBasePath('/api/v1');
 
+//middleware para parsear json
+$app->addBodyParsingMiddleware();
+
 //rotas
 require __DIR__ . '/../src/Routes/routes.php';
 
