@@ -21,6 +21,7 @@ O **TimeBank** é uma plataforma que permite a troca de horas de serviço entre 
 - **Illuminate Database (Eloquent ORM)** - ORM para interação com banco de dados
 - **PostgreSQL 15** - Banco de dados relacional
 - **Firebase PHP-JWT** - Autenticação e autorização via tokens JWT
+- **Swagger/OpenAPI** - Documentação interativa da API
 - **vlucas/phpdotenv** - Gerenciamento de variáveis de ambiente
 - **Docker & Docker Compose** - Containerização e orquestração
 - **pgAdmin** - Interface de administração do PostgreSQL
@@ -77,6 +78,33 @@ php -S localhost:8080 -t public
 ```
 
 A API estará disponível em `http://localhost:8080`
+
+## 📚 Documentação da API
+
+A documentação interativa da API está disponível através do Swagger UI:
+
+**Acesse:** `http://localhost:8080/docs.html`
+
+A documentação inclui:
+- Todos os endpoints disponíveis
+- Parâmetros e corpo das requisições
+- Respostas esperadas
+- Possibilidade de testar os endpoints diretamente no navegador
+
+### Endpoints Principais
+
+#### Autenticação
+- `POST /register` - Registrar novo usuário
+- `POST /login` - Autenticar e obter token JWT
+- `GET /me` - Obter informações do usuário autenticado
+
+#### Transações
+- `POST /transactions` - Criar nova proposta de troca de horas
+- `GET /transactions` - Listar todas as transações do usuário
+- `GET /transactions/incoming` - Listar transações pendentes recebidas
+- `PATCH /transactions/{id}/accept` - Aceitar uma transação
+- `PATCH /transactions/{id}/reject` - Rejeitar uma transação
+- `GET /transactions/available-users` - Listar usuários disponíveis
 
 ## Estrutura do Projeto
 
