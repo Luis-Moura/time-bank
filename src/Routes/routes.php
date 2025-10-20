@@ -16,6 +16,9 @@ $app->post('/login', [AuthController::class, 'login']);
 
 $app->post('/transactions', [TransactionController::class, 'create'])->add(new AuthMiddleware());
 $app->get('/transactions', [TransactionController::class, 'getUserTransactions'])->add(new AuthMiddleware());
+$app->patch('/transactions/{id}/accept', [TransactionController::class, 'accept'])->add(new AuthMiddleware());
+$app->patch('/transactions/{id}/reject', [TransactionController::class, 'reject'])->add(new AuthMiddleware());
+$app->get('/transactions/incoming', [TransactionController::class, 'incoming'])->add(new AuthMiddleware());
 
 $app->get('/me', function (Request $request, Response $response, array $args) {
   $userId = $request->getAttribute('user_id');
