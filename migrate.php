@@ -20,14 +20,22 @@ if (empty($files)) {
     exit(1);
 }
 
-echo "Executando migrations...\n\n";
+// Ordena alfabeticamente (garante ordem correta)
+sort($files);
 
+echo "Executando migrations...\n\n";
+    
 foreach ($files as $file) {
     echo "Rodando: " . basename($file) . "\n";
 
-    require_once $file;
-
-    echo "✓ Concluída\n\n";
+    try {
+        require_once $file;
+        echo "✓ Concluída\n\n";
+    } catch (\Illuminate\Database\QueryException $e) {
+        echo "⚠ Ignorado: " . $e->getMessage() . "\n\n";
+    } catch (\Exception $e) {
+        echo "Erro inesperado: " . $e->getMessage() . "\n\n";
+    }
 }
 
-echo "Todas as migrations foram executadas com sucesso!\n";
+echo "Todas as migrations foram executadas!\n";
