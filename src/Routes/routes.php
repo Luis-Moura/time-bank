@@ -19,6 +19,7 @@ $app->get('/transactions', [TransactionController::class, 'getUserTransactions']
 $app->patch('/transactions/{id}/accept', [TransactionController::class, 'accept'])->add(new AuthMiddleware());
 $app->patch('/transactions/{id}/reject', [TransactionController::class, 'reject'])->add(new AuthMiddleware());
 $app->get('/transactions/incoming', [TransactionController::class, 'incoming'])->add(new AuthMiddleware());
+$app->get('/transactions/available-users', [TransactionController::class, 'getAvailableUsers'])->add(new AuthMiddleware());
 
 $app->get('/me', function (Request $request, Response $response, array $args) {
   $userId = $request->getAttribute('user_id');
