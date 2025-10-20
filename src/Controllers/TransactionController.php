@@ -74,6 +74,7 @@ class TransactionController
     $transaction->save();
 
     $response->getBody()->write(json_encode($transaction));
+
     return $response->withHeader('Content-Type', 'application/json');
   }
 
@@ -100,6 +101,18 @@ class TransactionController
     $transaction->save();
 
     $response->getBody()->write(json_encode($transaction));
+
+    return $response->withHeader('Content-Type', 'application/json');
+  }
+
+  public function incoming(Request $request, Response $response)
+  {
+    $userId = $request->getAttribute('user_id');
+
+    $transactions = Transaction::where('to_user_id', $userId)->get();
+
+    $response->getBody()->write(json_encode($transactions));
+
     return $response->withHeader('Content-Type', 'application/json');
   }
 }
