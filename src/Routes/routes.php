@@ -14,8 +14,8 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 $app->post('/register', [AuthController::class, 'register']);
 $app->post('/login', [AuthController::class, 'login']);
 
-$app->post('/transactions', [TransactionController::class, 'create']);
-$app->get('/transactions', [TransactionController::class, 'getUserTransactions']);
+$app->post('/transactions', [TransactionController::class, 'create'])->add(new AuthMiddleware());
+$app->get('/transactions', [TransactionController::class, 'getUserTransactions'])->add(new AuthMiddleware());
 
 $app->get('/me', function (Request $request, Response $response, array $args) {
   $userId = $request->getAttribute('user_id');
