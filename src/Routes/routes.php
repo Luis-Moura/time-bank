@@ -4,6 +4,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Middlewares\AuthMiddleware;
 use App\Controllers\AuthController;
 use App\Controllers\TransactionController;
+use App\Controllers\UserController;
 
 $app->get('/', function (Request $request, Response $response, array $args) {
   $response->getBody()->write("API TimeBank");
@@ -21,12 +22,4 @@ $app->patch('/transactions/{id}/reject', [TransactionController::class, 'reject'
 $app->get('/transactions/incoming', [TransactionController::class, 'incoming'])->add(new AuthMiddleware());
 $app->get('/transactions/available-users', [TransactionController::class, 'getAvailableUsers'])->add(new AuthMiddleware());
 
-$app->get('/me', function (Request $request, Response $response, array $args) {
-  $userId = $request->getAttribute('user_id');
-
-  $user = App\Models\User::find($userId);
-
-  $response->getBody()->write(json_encode($user));
-
-  return $response->withHeader('Content-Type', 'application/json');
-})->add(new AuthMiddleware());
+$app->get('/me', [UserController::class, 'me'])->add(new AuthMiddleware());
