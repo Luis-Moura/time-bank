@@ -12,12 +12,27 @@ class TransactionController
   {
     $userId = $request->getAttribute('user_id');
     $data = $request->getParsedBody();
+    $toUserId = $data['toUserId'] ?? '';
+    $hours = $data['hours'] ?? '';
+    $description = $data['description'] ?? '';
+
+    if ($toUserId === $userId) {
+      $response->getBody()->write(json_encode(["error" => "You cannot send hours to yourself."]));
+
+      return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+    }
+
+    if (!$toUserId || !$hours || !$description) {
+      $response->getBody()->write(json_encode(['error' => 'Missing fields']));
+
+      return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+    }
 
     $transaction = Transaction::create([
       'from_user_id' => $userId,
-      'to_user_id' => $data['to_user_id'],
-      'hours' => $data['hours'],
-      'description' => $data['description']
+      'to_user_id' => $toUserId,
+      'hours' => $hours,
+      'description' => $description
     ]);
 
     $response->getBody()->write(json_encode($transaction));
