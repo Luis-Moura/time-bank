@@ -8,6 +8,7 @@ Capsule::schema()->create('transactions', function ($table) {
   $table->unsignedBigInteger('to_user_id');
   $table->integer('hours');
   $table->string('description');
+  $table->string('status')->default('pending');
   $table->timestamps();
 
   $table->foreign('from_user_id')->references('id')->on('users');

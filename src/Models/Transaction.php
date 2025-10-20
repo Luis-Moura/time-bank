@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\StatusEnum;
 
 class Transaction extends Model
 {
@@ -9,7 +10,8 @@ class Transaction extends Model
     'from_user_id',
     'to_user_id',
     'hours',
-    'description'
+    'description',
+    'status'
   ];
 
   public function fromUser()
