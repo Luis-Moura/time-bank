@@ -1,5 +1,5 @@
 <?php
-namespace MyApp\Handlers;
+namespace App\Handlers;
 
 use Psr\Http\Message\ResponseInterface;
 use Slim\Exception\HttpBadRequestException;
