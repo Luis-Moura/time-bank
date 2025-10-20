@@ -73,4 +73,14 @@ class UserController
 
     return $response->withHeader('Content-Type', 'application/json');
   }
+
+  public function listSkills(Request $request, Response $response)
+  {
+    $userId = $request->getAttribute('user_id');
+    $skills = Skill::where('user_id', $userId)->get();
+
+    $response->getBody()->write(json_encode($skills));
+
+    return $response->withHeader('Content-Type', 'application/json');
+  }
 }
