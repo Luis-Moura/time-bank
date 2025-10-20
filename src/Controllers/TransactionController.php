@@ -109,7 +109,7 @@ class TransactionController
   {
     $userId = $request->getAttribute('user_id');
 
-    $transactions = Transaction::where('to_user_id', $userId)->get();
+    $transactions = Transaction::where('to_user_id', $userId)->where('status', 'pending')->get();
 
     $response->getBody()->write(json_encode($transactions));
 
