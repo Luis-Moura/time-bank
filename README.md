@@ -14,24 +14,6 @@ O **TimeBank** é uma plataforma que permite a troca de horas de serviço entre 
 
 > **João** ajuda **Maria** a configurar um site por **2 horas** → em troca, **Maria** ajuda **João** com **2 horas** de design gráfico.
 
-## 💡 Valor do Projeto
-
-### Social e Colaborativo
-- Incentiva troca de habilidades e serviços sem depender de dinheiro
-- Fortalece redes de apoio local ou de equipes remotas
-- Cria uma comunidade de colaboração que cresce com o tempo
-
-### Aprendizado e Networking
-- Usuários aprendem novas habilidades ao ajudar uns aos outros
-- Promove networking orgânico entre profissionais
-- Estimula o desenvolvimento pessoal e profissional
-
-### Tecnológico
-- Backend robusto com boas práticas de programação
-- Segurança com autenticação JWT
-- Lógica de negócios completa com estados de transação (pending, accepted, rejected)
-- Arquitetura escalável e flexível
-
 ## 🚀 Tecnologias Utilizadas
 
 - **PHP 8+** - Linguagem principal
@@ -45,7 +27,7 @@ O **TimeBank** é uma plataforma que permite a troca de horas de serviço entre 
 
 ## 📋 Pré-requisitos
 
-- Docker e Docker Compose instalados
+- Docker e Docker Compose instalados ou Postgresql instalado
 - PHP 8+ (para rodar localmente sem Docker)
 - Composer
 
@@ -96,7 +78,7 @@ php -S localhost:8080 -t public
 
 A API estará disponível em `http://localhost:8080`
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 time-bank/
@@ -115,21 +97,13 @@ time-bank/
 └── composer.json              # Dependências do projeto
 ```
 
-## 🔐 Autenticação
+## Autenticação
 
 A API utiliza JWT (JSON Web Tokens) para autenticação. Após o login, inclua o token no header das requisições:
 
 ```
 Authorization: Bearer {seu-token-jwt}
 ```
-
-## 🌟 Funcionalidades
-
-- ✅ Autenticação de usuários com JWT
-- ✅ Registro de transações de tempo
-- ✅ Sistema de aprovação/rejeição de transações
-- ✅ Controle de saldo de horas por usuário
-- ✅ Estados de transação (pending, accepted, rejected)
 
 ## 🎯 Possibilidades Futuras
 
