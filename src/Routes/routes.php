@@ -3,6 +3,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Middlewares\AuthMiddleware;
 use App\Controllers\AuthController;
+use App\Controllers\TransactionController;
 
 $app->get('/', function (Request $request, Response $response, array $args) {
   $response->getBody()->write("API TimeBank");
@@ -12,6 +13,9 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 
 $app->post('/register', [AuthController::class, 'register']);
 $app->post('/login', [AuthController::class, 'login']);
+
+$app->post('/transactions', [TransactionController::class, 'create']);
+$app->get('/transactions', [TransactionController::class, 'getUserTransactions']);
 
 $app->get('/me', function (Request $request, Response $response, array $args) {
   $userId = $request->getAttribute('user_id');
