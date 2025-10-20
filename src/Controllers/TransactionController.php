@@ -21,4 +21,16 @@ class TransactionController
     $response->getBody()->write(json_encode($transaction));
     return $response->withHeader('Content-Type', 'application/json');
   }
+
+  public function getUserTransactions(Request $request, Response $response)
+  {
+    $userId = $request->getAttribute('user_id');
+
+    $transactions = Transaction::where('from_user_id', $userId)
+      ->orWhere('to_user_id', $userId)
+      ->get();
+
+    $response->getBody()->write(json_encode($transactions));
+    return $response->withHeader('Content-Type', 'application/json');
+  }
 }
