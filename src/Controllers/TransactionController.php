@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Transaction;
+use App\Models\User;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -112,6 +113,19 @@ class TransactionController
     $transactions = Transaction::where('to_user_id', $userId)->where('status', 'pending')->get();
 
     $response->getBody()->write(json_encode($transactions));
+
+    return $response->withHeader('Content-Type', 'application/json');
+  }
+
+  public function getAvailableUsers(Request $request, Response $response)
+  {
+    $userId = $request->getAttribute('user_id');
+
+    $users = User::where('id', '!=', $userId)
+      ->select('id', 'name')
+      ->get();
+
+    $response->getBody()->write(json_encode($users));
 
     return $response->withHeader('Content-Type', 'application/json');
   }
