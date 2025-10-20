@@ -13,6 +13,19 @@ services:
     networks:
       - time-bank-network
 
+  time-bank-pgadmin:
+    image: dpage/pgadmin4
+    container_name: time-bank-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - time-bank-postgresql
+    networks:
+      - time-bank-network
+
 volumes:
   pgdata:
     driver: local
