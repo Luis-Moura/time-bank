@@ -23,3 +23,4 @@ $app->get('/transactions/incoming', [TransactionController::class, 'incoming'])-
 $app->get('/transactions/available-users', [TransactionController::class, 'getAvailableUsers'])->add(new AuthMiddleware());
 
 $app->get('/me', [UserController::class, 'me'])->add(new AuthMiddleware());
+$app->post('/users/skills', [UserController::class, 'addSkills'])->add(new AuthMiddleware());
