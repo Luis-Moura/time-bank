@@ -9,8 +9,18 @@ use App\Controllers\SkillsController;
 
 $app->get('/', function (Request $request, Response $response, array $args) {
   $response->getBody()->write("API TimeBank");
-
   return $response;
+});
+
+$app->get('/health', function (Request $request, Response $response, array $args) {
+  $hostname = gethostname();
+  $data = [
+    'status' => 'healthy',
+    'instance' => $hostname,
+    'timestamp' => date('Y-m-d H:i:s')
+  ];
+  $response->getBody()->write(json_encode($data));
+  return $response->withHeader('Content-Type', 'application/json');
 });
 
 $app->post('/register', [AuthController::class, 'register']);
