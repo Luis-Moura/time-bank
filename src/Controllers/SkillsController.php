@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
 use App\Models\Skill;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -10,6 +9,40 @@ use OpenApi\Attributes as OA;
 
 class SkillsController
 {
+  #[OA\Post(
+    path: "/skills",
+    summary: "Adicionar nova habilidade",
+    security: [["bearerAuth" => []]],
+    requestBody: new OA\RequestBody(
+      required: true,
+      content: new OA\JsonContent(
+        required: ["name", "skill_level"],
+        properties: [
+          new OA\Property(property: "name", type: "string", example: "PHP"),
+          new OA\Property(property: "skill_level", type: "string", example: "avançado")
+        ]
+      )
+    ),
+    tags: ["Habilidades"],
+    responses: [
+      new OA\Response(
+        response: 200,
+        description: "Habilidade criada com sucesso",
+        content: new OA\JsonContent(
+          properties: [
+            new OA\Property(property: "id", type: "integer", example: 1),
+            new OA\Property(property: "name", type: "string", example: "PHP"),
+            new OA\Property(property: "skill_level", type: "string", example: "avançado"),
+            new OA\Property(property: "user_id", type: "integer", example: 1),
+            new OA\Property(property: "created_at", type: "string", format: "date-time"),
+            new OA\Property(property: "updated_at", type: "string", format: "date-time")
+          ]
+        )
+      ),
+      new OA\Response(response: 400, description: "Dados inválidos ou habilidade já existe"),
+      new OA\Response(response: 401, description: "Não autenticado")
+    ]
+  )]
   public function addSkills(Request $request, Response $response)
   {
     $userId = $request->getAttribute('user_id');
@@ -42,6 +75,32 @@ class SkillsController
     return $response->withHeader('Content-Type', 'application/json');
   }
 
+  #[OA\Get(
+    path: "/skills",
+    summary: "Listar todas as habilidades do usuário",
+    security: [["bearerAuth" => []]],
+    tags: ["Habilidades"],
+    responses: [
+      new OA\Response(
+        response: 200,
+        description: "Lista de habilidades",
+        content: new OA\JsonContent(
+          type: "array",
+          items: new OA\Items(
+            properties: [
+              new OA\Property(property: "id", type: "integer", example: 1),
+              new OA\Property(property: "name", type: "string", example: "PHP"),
+              new OA\Property(property: "skill_level", type: "string", example: "avançado"),
+              new OA\Property(property: "user_id", type: "integer", example: 1),
+              new OA\Property(property: "created_at", type: "string", format: "date-time"),
+              new OA\Property(property: "updated_at", type: "string", format: "date-time")
+            ]
+          )
+        )
+      ),
+      new OA\Response(response: 401, description: "Não autenticado")
+    ]
+  )]
   public function listSkills(Request $request, Response $response)
   {
     $userId = $request->getAttribute('user_id');
@@ -52,6 +111,40 @@ class SkillsController
     return $response->withHeader('Content-Type', 'application/json');
   }
 
+  #[OA\Get(
+    path: "/skills/{id}",
+    summary: "Obter habilidade por ID",
+    security: [["bearerAuth" => []]],
+    tags: ["Habilidades"],
+    parameters: [
+      new OA\Parameter(
+        name: "id",
+        in: "path",
+        required: true,
+        schema: new OA\Schema(type: "integer"),
+        example: 1
+      )
+    ],
+    responses: [
+      new OA\Response(
+        response: 200,
+        description: "Detalhes da habilidade",
+        content: new OA\JsonContent(
+          properties: [
+            new OA\Property(property: "id", type: "integer", example: 1),
+            new OA\Property(property: "name", type: "string", example: "PHP"),
+            new OA\Property(property: "skill_level", type: "string", example: "avançado"),
+            new OA\Property(property: "user_id", type: "integer", example: 1),
+            new OA\Property(property: "created_at", type: "string", format: "date-time"),
+            new OA\Property(property: "updated_at", type: "string", format: "date-time")
+          ]
+        )
+      ),
+      new OA\Response(response: 403, description: "Não autorizado"),
+      new OA\Response(response: 404, description: "Habilidade não encontrada"),
+      new OA\Response(response: 401, description: "Não autenticado")
+    ]
+  )]
   public function getSkillById(Request $request, Response $response, array $args)
   {
     $skillId = $args['id'];
@@ -74,6 +167,51 @@ class SkillsController
     return $response->withHeader('Content-Type', 'application/json');
   }
 
+  #[OA\Put(
+    path: "/skills/{id}",
+    summary: "Atualizar uma habilidade",
+    security: [["bearerAuth" => []]],
+    requestBody: new OA\RequestBody(
+      required: true,
+      content: new OA\JsonContent(
+        required: ["name", "skill_level"],
+        properties: [
+          new OA\Property(property: "name", type: "string", example: "JavaScript"),
+          new OA\Property(property: "skill_level", type: "string", example: "intermediário")
+        ]
+      )
+    ),
+    tags: ["Habilidades"],
+    parameters: [
+      new OA\Parameter(
+        name: "id",
+        in: "path",
+        required: true,
+        schema: new OA\Schema(type: "integer"),
+        example: 1
+      )
+    ],
+    responses: [
+      new OA\Response(
+        response: 200,
+        description: "Habilidade atualizada com sucesso",
+        content: new OA\JsonContent(
+          properties: [
+            new OA\Property(property: "id", type: "integer", example: 1),
+            new OA\Property(property: "name", type: "string", example: "JavaScript"),
+            new OA\Property(property: "skill_level", type: "string", example: "intermediário"),
+            new OA\Property(property: "user_id", type: "integer", example: 1),
+            new OA\Property(property: "created_at", type: "string", format: "date-time"),
+            new OA\Property(property: "updated_at", type: "string", format: "date-time")
+          ]
+        )
+      ),
+      new OA\Response(response: 400, description: "Dados inválidos"),
+      new OA\Response(response: 403, description: "Não autorizado"),
+      new OA\Response(response: 404, description: "Habilidade não encontrada"),
+      new OA\Response(response: 401, description: "Não autenticado")
+    ]
+  )]
   public function updateSkill(Request $request, Response $response, array $args)
   {
     $skillId = $args['id'];
@@ -110,6 +248,35 @@ class SkillsController
     return $response->withHeader('Content-Type', 'application/json');
   }
 
+  #[OA\Delete(
+    path: "/skills/{id}",
+    summary: "Deletar uma habilidade",
+    security: [["bearerAuth" => []]],
+    tags: ["Habilidades"],
+    parameters: [
+      new OA\Parameter(
+        name: "id",
+        in: "path",
+        required: true,
+        schema: new OA\Schema(type: "integer"),
+        example: 1
+      )
+    ],
+    responses: [
+      new OA\Response(
+        response: 200,
+        description: "Habilidade deletada com sucesso",
+        content: new OA\JsonContent(
+          properties: [
+            new OA\Property(property: "message", type: "string", example: "Skill deleted")
+          ]
+        )
+      ),
+      new OA\Response(response: 403, description: "Não autorizado"),
+      new OA\Response(response: 404, description: "Habilidade não encontrada"),
+      new OA\Response(response: 401, description: "Não autenticado")
+    ]
+  )]
   public function deleteSkill(Request $request, Response $response, array $args)
   {
     $skillId = $args['id'];
