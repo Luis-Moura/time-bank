@@ -87,4 +87,29 @@ class SkillsController
 
     return $response->withHeader('Content-Type', 'application/json');
   }
+
+  public function deleteSkill(Request $request, Response $response, array $args)
+  {
+    $skillId = $args['id'];
+
+    $skill = Skill::find($skillId);
+
+    if (!$skill) {
+      $response->getBody()->write(json_encode(['error' => 'Skill not found']));
+
+      return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+    }
+
+    if ($skill->user_id != $request->getAttribute('user_id')) {
+      $response->getBody()->write(json_encode(['error' => 'Unauthorized']));
+
+      return $response->withStatus(403)->withHeader('Content-Type', 'application/json');
+    }
+
+    Skill::destroy($skill->id);
+
+    $response->getBody()->write(json_encode(['message' => 'Skill deleted']));
+
+    return $response->withHeader('Content-Type', 'application/json');
+  }
 }

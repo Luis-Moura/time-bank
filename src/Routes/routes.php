@@ -26,6 +26,7 @@ $app->get('/transactions/available-users', [TransactionController::class, 'getAv
 $app->post('/skills', [SkillsController::class, 'addSkills'])->add(new AuthMiddleware());
 $app->get('/skills', [SkillsController::class, 'listSkills'])->add(new AuthMiddleware());
 $app->put('/skills/{id}', [SkillsController::class, 'updateSkill'])->add(new AuthMiddleware());
+$app->delete('/skills/{id}', [SkillsController::class, 'deleteSkill'])->add(new AuthMiddleware());
 
 $app->get('/me', [UserController::class, 'me'])->add(new AuthMiddleware());
 
