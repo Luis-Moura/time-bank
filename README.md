@@ -40,7 +40,7 @@ composer install
 cp .env.example .env
 # Ajuste DB_HOST=localhost no .env
 
-# Suba apenas PostgreSQL e pgAdmin
+# Suba apenas PostgreSQL e pgAdmin (ou configure o seu postgres de maneira local no seu pc)
 docker compose up -d time-bank-postgresql time-bank-pgadmin
 
 # Execute migrations
