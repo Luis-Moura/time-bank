@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\Transaction;
 use App\Models\User;
-use App\Models\Skill;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use OpenApi\Attributes as OA;
