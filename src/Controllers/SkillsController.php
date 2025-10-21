@@ -51,4 +51,40 @@ class SkillsController
 
     return $response->withHeader('Content-Type', 'application/json');
   }
+
+  public function updateSkill(Request $request, Response $response, array $args)
+  {
+    $skillId = $args['id'];
+
+    $skill = Skill::find($skillId);
+    $data = $request->getParsedBody();
+    $name = $data['name'] ?? null;
+    $skillLevel = $data['skill_level'] ?? null;
+
+    if (!$skill) {
+      $response->getBody()->write(json_encode(['error' => 'Skill not found']));
+
+      return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
+    }
+
+    if ($skill->user_id != $request->getAttribute('user_id')) {
+      $response->getBody()->write(json_encode(['error' => 'Unauthorized']));
+
+      return $response->withStatus(403)->withHeader('Content-Type', 'application/json');
+    }
+
+    if (!$name || !$skillLevel) {
+      $response->getBody()->write(json_encode(['error' => 'Missing fields']));
+
+      return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
+    }
+
+    $skill->name = $name;
+    $skill->skill_level = $skillLevel;
+    $skill->save();
+
+    $response->getBody()->write(json_encode($skill));
+
+    return $response->withHeader('Content-Type', 'application/json');
+  }
 }
