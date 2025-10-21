@@ -16,126 +16,68 @@ O **TimeBank** é uma plataforma que permite a troca de horas de serviço entre 
 
 ## 🚀 Tecnologias Utilizadas
 
-- **PHP 8+** - Linguagem principal
-- **Slim Framework 4** - Microframework para construção da API REST
-- **Illuminate Database (Eloquent ORM)** - ORM para interação com banco de dados
-- **PostgreSQL 15** - Banco de dados relacional
-- **Firebase PHP-JWT** - Autenticação e autorização via tokens JWT
-- **Swagger/OpenAPI** - Documentação interativa da API
-- **vlucas/phpdotenv** - Gerenciamento de variáveis de ambiente
-- **Docker & Docker Compose** - Containerização e orquestração
-- **pgAdmin** - Interface de administração do PostgreSQL
-
-## 📋 Pré-requisitos
-
-- Docker e Docker Compose instalados ou Postgresql instalado
-- PHP 8+ (para rodar localmente sem Docker)
-- Composer
+- **PHP 8.2** com Apache
+- **Slim Framework 4** - API REST
+- **Eloquent ORM** - Gerenciamento de banco de dados
+- **PostgreSQL 15** - Banco de dados
+- **Firebase PHP-JWT** - Autenticação JWT
+- **Nginx** - Balancedor de Carga
+- **Docker & Docker Compose** - Containerização
 
 ## 🔧 Instalação e Configuração
 
-### 1. Clone o repositório
+### Opção 1: Desenvolvimento Local
 
 ```bash
+# Clone o repositório
 git clone <seu-repositorio>
 cd time-bank
-```
 
-### 2. Instale as dependências
-
-```bash
+# Instale dependências
 composer install
-```
 
-### 3. Configure as variáveis de ambiente
-
-Copie o arquivo `.env` e ajuste conforme necessário:
-
-```bash
+# Configure o ambiente
 cp .env.example .env
-```
+# Ajuste DB_HOST=localhost no .env
 
-### 4. Suba os containers Docker
+# Suba apenas PostgreSQL e pgAdmin
+docker compose up -d time-bank-postgresql time-bank-pgadmin
 
-```bash
-docker compose up -d
-```
-
-Isso iniciará:
-- PostgreSQL na porta `5432`
-- pgAdmin na porta `5050` (acesse via `http://localhost:5050`)
-
-### 5. Execute as migrations
-
-```bash
+# Execute migrations
 php migrate.php
-```
 
-### 6. Inicie o servidor PHP
-
-```bash
+# Inicie o servidor
 php -S localhost:8080 -t public
 ```
 
-A API estará disponível em `http://localhost:8080`
+**Acessos:**
+- API: `http://localhost:8080/api/v1`
+- Swagger: `http://localhost:8080/docs.html`
+- pgAdmin: `http://localhost:5050` (admin@admin.com / admin)
 
-## 📚 Documentação da API
+### Opção 2: Docker Completo
 
-A documentação interativa da API está disponível através do Swagger UI:
+```bash
+# Configure o ambiente
+cp .env.example .env
+# Use DB_HOST=time-bank-postgresql no .env
 
-**Acesse:** `http://localhost:8080/docs.html`
+# Suba todos os serviços
+docker compose up -d
 
-A documentação inclui:
-- Todos os endpoints disponíveis
-- Parâmetros e corpo das requisições
-- Respostas esperadas
-- Possibilidade de testar os endpoints diretamente no navegador
-
-### Endpoints Principais
-
-#### Autenticação
-- `POST /register` - Registrar novo usuário
-- `POST /login` - Autenticar e obter token JWT
-- `GET /me` - Obter informações do usuário autenticado
-
-#### Transações
-- `POST /transactions` - Criar nova proposta de troca de horas
-- `GET /transactions` - Listar todas as transações do usuário
-- `GET /transactions/incoming` - Listar transações pendentes recebidas
-- `PATCH /transactions/{id}/accept` - Aceitar uma transação
-- `PATCH /transactions/{id}/reject` - Rejeitar uma transação
-- `GET /transactions/available-users` - Listar usuários disponíveis
-
-## Estrutura do Projeto
-
-```
-time-bank/
-├── public/
-│   └── index.php              # Ponto de entrada da aplicação
-├── src/
-│   ├── Config/
-│   │   └── database/          # Configuração e migrations
-│   ├── Controllers/           # Controladores da aplicação
-│   ├── Handlers/              # Tratamento de erros
-│   ├── Middlewares/           # Middlewares (auth, etc)
-│   ├── Models/                # Models Eloquent
-│   └── Routes/                # Definição de rotas
-├── docker-compose.yml         # Configuração Docker
-├── migrate.php                # Script de migração
-└── composer.json              # Dependências do projeto
+# Migrations executam automaticamente
 ```
 
-## Autenticação
+**Acessos:**
+- API (Nginx load balancer): `http://localhost:8080/api/v1`
+- Swagger: `http://localhost:8080/docs.html`
+- pgAdmin: `http://localhost:5050`
 
-A API utiliza JWT (JSON Web Tokens) para autenticação. Após o login, inclua o token no header das requisições:
+**Arquitetura:** Nginx balanceia requisições entre duas instâncias da API usando algoritmo `least_conn`.
 
+## 🔐 Autenticação
+
+Use JWT no header das requisições:
 ```
-Authorization: Bearer {seu-token-jwt}
+Authorization: Bearer {seu-token}
 ```
-
-## 🎯 Possibilidades Futuras
-
-- Adicionar campo de habilidades para os usuários
-- Sistema de avaliações pós serviço
-- Relatórios de transações
-- Filtros e buscas avançadas
