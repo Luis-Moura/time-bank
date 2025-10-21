@@ -11,9 +11,12 @@ class AuthMiddleware
   public function __invoke(Request $request, $handler): Response
   {
     $authHeader = $request->getHeaderLine('Authorization');
+    
     if (!$authHeader || !preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
       $response = new \Slim\Psr7\Response();
+
       $response->getBody()->write(json_encode(['error' => 'Token not provided']));
+
       return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
     }
 
