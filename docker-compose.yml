@@ -1,13 +1,36 @@
 services:
-  time-bank-backend:
+  time-bank-nginx:
+    image: nginx:alpine
+    container_name: time-bank-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - time-bank-app1
+      - time-bank-app2
+    networks:
+      - time-bank-network
+
+  time-bank-app1:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: time-bank-backend
+    container_name: time-bank-app1
     env_file:
       - .env
-    ports:
-      - "8080:80"
+    depends_on:
+      - time-bank-postgresql
+    networks:
+      - time-bank-network
+
+  time-bank-app2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: time-bank-app2
+    env_file:
+      - .env
     depends_on:
       - time-bank-postgresql
     networks:
