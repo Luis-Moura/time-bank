@@ -88,6 +88,7 @@ class AuthController
     ]);
 
     $response->getBody()->write(json_encode(['message' => 'User created', 'user_id' => $user->id]));
+
     return $response->withHeader('Content-Type', 'application/json');
   }
 
@@ -135,11 +136,14 @@ class AuthController
     $user = User::where('email', $email)->first();
 
     if (!$user) {
-      $response->getBody()->write(json_encode(['error' => 'User not found']));
+      $response->getBody()->write(json_encode(['error' => 'Invalid credentials']));
+
+      return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
     }
 
     if (!password_verify($password, $user->password)) {
       $response->getBody()->write(json_encode(['error' => 'Invalid credentials']));
+
       return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
     }
 
@@ -154,6 +158,7 @@ class AuthController
     $jwt = JWT::encode($payload, $_ENV['JWT_SECRET'], 'HS256');
 
     $response->getBody()->write(json_encode(['token' => $jwt]));
+
     return $response->withHeader('Content-Type', 'application/json');
   }
 }
