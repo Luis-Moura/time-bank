@@ -1,11 +1,25 @@
 services:
+  time-bank-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: time-bank-backend
+    env_file:
+      - .env
+    ports:
+      - "8080:80"
+    depends_on:
+      - time-bank-postgresql
+    networks:
+      - time-bank-network
+
   time-bank-postgresql:
     image: postgres:15
     container_name: time-bank-postgresql
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: time_bank
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
